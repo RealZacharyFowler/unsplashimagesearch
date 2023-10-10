@@ -9,7 +9,7 @@ const App = () => {
 
   const handleSearch = (event) => {
     event.preventDefault();
-    console.log('submitted');
+    console.log(searchInput.current.value);
 
   };
 
@@ -26,6 +26,18 @@ const App = () => {
           />
         </Form>
       </div>
+      <div className='container'>
+      <h1 className='title'>Image Search</h1>
+      <div className='search-section'>
+        ...
+      </div>
+      <div className='filters'>
+        <div>Nature</div>
+        <div>Birds</div>
+        <div>Cats</div>
+        <div>Shoes</div>
+      </div>
+</div>
     </div>
   );
 };
