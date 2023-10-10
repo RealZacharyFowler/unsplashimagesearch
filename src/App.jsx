@@ -1,16 +1,17 @@
-
+import React, { useRef } from 'react';
 import { Form } from 'react-bootstrap';
 import './index.css';
-import React, { useRef } from 'react';
 
 const App = () => {
-
   const searchInput = useRef(null);
 
   const handleSearch = (event) => {
     event.preventDefault();
     console.log(searchInput.current.value);
+  };
 
+  const handleSelection = (selection) => {
+    searchInput.current.value = selection;
   };
 
   return (
@@ -26,18 +27,12 @@ const App = () => {
           />
         </Form>
       </div>
-      <div className='container'>
-      <h1 className='title'>Image Search</h1>
-      <div className='search-section'>
-        ...
-      </div>
       <div className='filters'>
-        <div>Nature</div>
-        <div>Birds</div>
-        <div>Cats</div>
-        <div>Shoes</div>
+        <div onClick={() => handleSelection('nature')}>Nature</div>
+        <div onClick={() => handleSelection('birds')}>Birds</div>
+        <div onClick={() => handleSelection('cats')}>Cats</div>
+        <div onClick={() => handleSelection('shoes')}>Shoes</div>
       </div>
-</div>
     </div>
   );
 };
