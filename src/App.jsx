@@ -7,15 +7,6 @@ const IMAGES_PER_PAGE = 20;
 const App = () => {
   const searchInput = useRef(null);
 
-  const handleSearch = (event) => {
-    event.preventDefault();
-    console.log(searchInput.current.value);
-  };
-
-  const handleSelection = (selection) => {
-    searchInput.current.value = selection;
-  };
-
   const fetchImages = async () => {
     try {
       const { data } = await axios.get(
@@ -29,6 +20,16 @@ const App = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleSearch = (event) => {
+    event.preventDefault();
+    console.log(searchInput.current.value);
+  };
+
+  const handleSelection = (selection) => {
+    searchInput.current.value = selection;
+    fetchImages();
   };
 
   return (
