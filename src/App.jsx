@@ -3,6 +3,7 @@ import { Form } from 'react-bootstrap';
 import './index.css';
 const API_URL = 'https://api.unsplash.com/search/photos';
 const IMAGES_PER_PAGE = 20;
+import axios from 'axios';
 
 const App = () => {
   const searchInput = useRef(null);
