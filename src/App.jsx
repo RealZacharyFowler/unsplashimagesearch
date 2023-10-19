@@ -1,42 +1,52 @@
-import React, { useRef } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import axios from 'axios';
+import { useEffect, useRef, useState } from 'react';
+import { Button, Form } from 'react-bootstrap';
 import './index.css';
+
 const API_URL = 'https://api.unsplash.com/search/photos';
 const IMAGES_PER_PAGE = 20;
-import axios from 'axios';
-import { useState } from 'react';
 
 const App = () => {
   const searchInput = useRef(null);
   const [images, setImages] = useState([]);
+  const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
 
-  const [page, setPage] = useState(1);
+  useEffect(() => {
+    fetchImages();
+  }, [page]);
 
   const fetchImages = async () => {
     try {
       const { data } = await axios.get(
-        `${API_URL}?query=${searchInput.current.value
-        }&page=1&per_page=${IMAGES_PER_PAGE}&client_id=${import.meta.env.VITE_API_KEY
+        `${API_URL}?query=${
+          searchInput.current.value
+        }&page=${page}&per_page=${IMAGES_PER_PAGE}&client_id=${
+          import.meta.env.VITE_API_KEY
         }`
       );
       console.log('data', data);
       setImages(data.results);
-      setTotalPages(data.total_pages)
+      setTotalPages(data.total_pages);
     } catch (error) {
       console.log(error);
     }
   };
 
+  const resetSearch = () => {
+    setPage(1);
+    fetchImages();
+  };
+
   const handleSearch = (event) => {
     event.preventDefault();
     console.log(searchInput.current.value);
-    fetchImages();
+    resetSearch();
   };
 
   const handleSelection = (selection) => {
     searchInput.current.value = selection;
-    fetchImages();
+    resetSearch();
   };
 
   console.log('page', page);
@@ -79,7 +89,6 @@ const App = () => {
         )}
       </div>
     </div>
-
   );
 };
 
