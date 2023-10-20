@@ -14,16 +14,18 @@ const App = () => {
 
   const fetchImages = useCallback(async () => {
     try {
-      const { data } = await axios.get(
-        `${API_URL}?query=${
-          searchInput.current.value
-        }&page=${page}&per_page=${IMAGES_PER_PAGE}&client_id=${
-          import.meta.env.VITE_API_KEY
-        }`
-      );
-      console.log('data', data);
-      setImages(data.results);
-      setTotalPages(data.total_pages);
+      if (searchInput.current.value) {
+        const { data } = await axios.get(
+          `${API_URL}?query=${
+            searchInput.current.value
+          }&page=${page}&per_page=${IMAGES_PER_PAGE}&client_id=${
+            import.meta.env.VITE_API_KEY
+          }`
+        );
+        console.log('data', data);
+        setImages(data.results);
+        setTotalPages(data.total_pages);
+      }
     } catch (error) {
       console.log(error);
     }
