@@ -11,10 +11,14 @@ const App = () => {
   const [images, setImages] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
   const fetchImages = useCallback(async () => {
     try {
       if (searchInput.current.value) {
+        setErrorMsg('');
+        setLoading(true);
         const { data } = await axios.get(
           `${API_URL}?query=${
             searchInput.current.value
@@ -22,12 +26,14 @@ const App = () => {
             import.meta.env.VITE_API_KEY
           }`
         );
-        console.log('data', data);
         setImages(data.results);
         setTotalPages(data.total_pages);
+        setLoading(false);
       }
     } catch (error) {
+      setErrorMsg('Error fetching images. Try again later.');
       console.log(error);
+      setLoading(false);
     }
   }, [page]);
 
@@ -72,24 +78,30 @@ const App = () => {
         <div onClick={() => handleSelection('cats')}>Cats</div>
         <div onClick={() => handleSelection('shoes')}>Shoes</div>
       </div>
-      <div className='images'>
-        {images.map((image) => (
-          <img
-            key={image.id}
-            src={image.urls.small}
-            alt={image.alt_description}
-            className='image'
-          />
-        ))}
-      </div>
-      <div className='buttons'>
-        {page > 1 && (
-          <Button onClick={() => setPage(page - 1)}>Previous</Button>
-        )}
-        {page < totalPages && (
-          <Button onClick={() => setPage(page + 1)}>Next</Button>
-        )}
-      </div>
+      {loading ? (
+  <p className='loading'>Loading...</p>
+) : (
+  <>
+    <div className='images'>
+      {images.map((image) => (
+        <img
+          key={image.id}
+          src={image.urls.small}
+          alt={image.alt_description}
+          className='image'
+        />
+      ))}
+    </div>
+    <div className='buttons'>
+      {page > 1 && (
+        <Button onClick={() => setPage(page - 1)}>Previous</Button>
+      )}
+      {page < totalPages && (
+        <Button onClick={() => setPage(page + 1)}>Next</Button>
+      )}
+    </div>
+  </>
+)}
     </div>
   );
 };
